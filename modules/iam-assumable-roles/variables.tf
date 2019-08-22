@@ -4,6 +4,24 @@ variable "trusted_role_arns" {
   default     = []
 }
 
+variable "admin_trusted_role_arns" {
+  description = "ARNs of AWS entities who can assume the admin role"
+  type        = list(string)
+  default     = []
+}
+
+variable "poweruser_trusted_role_arns" {
+  description = "ARNs of AWS entities who can assume the poweruser role"
+  type        = list(string)
+  default     = []
+}
+
+variable "readonly_trusted_role_arns" {
+  description = "ARNs of AWS entities who can readonly the admin role"
+  type        = list(string)
+  default     = []
+}
+
 variable "mfa_age" {
   description = "Max age of valid MFA (in seconds) for roles which require MFA"
   type        = number

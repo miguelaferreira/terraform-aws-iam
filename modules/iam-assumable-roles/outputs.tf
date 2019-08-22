@@ -19,6 +19,11 @@ output "admin_iam_role_requires_mfa" {
   value       = var.admin_role_requires_mfa
 }
 
+output "admin_iam_role_trusted_arns" {
+  description = "The ARNs trusted to assume the admin role"
+  value       = length(var.admin_trusted_role_arns) > 0 ? var.admin_trusted_role_arns : var.trusted_role_arns
+}
+
 # Poweruser
 output "poweruser_iam_role_arn" {
   description = "ARN of poweruser IAM role"
@@ -38,6 +43,11 @@ output "poweruser_iam_role_path" {
 output "poweruser_iam_role_requires_mfa" {
   description = "Whether poweruser IAM role requires MFA"
   value       = var.poweruser_role_requires_mfa
+}
+
+output "poweruser_iam_role_trusted_arns" {
+  description = "The ARNs trusted to assume the poweruser role"
+  value       = length(var.poweruser_trusted_role_arns) > 0 ? var.poweruser_trusted_role_arns : var.trusted_role_arns
 }
 
 # Readonly
@@ -61,3 +71,7 @@ output "readonly_iam_role_requires_mfa" {
   value       = var.readonly_role_requires_mfa
 }
 
+output "readonly_iam_role_trusted_arns" {
+  description = "The ARNs trusted to assume the readonly role"
+  value       = length(var.readonly_trusted_role_arns) > 0 ? var.readonly_trusted_role_arns : var.trusted_role_arns
+}
