@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "assume_role_with_oidc" {
       content {
         test     = "StringLike"
         variable = "${var.provider_url}:sub"
-        values   = var.oidc_subjects_with_wildcards
+        values   = condition.value
       }
     }
   }
