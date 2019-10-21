@@ -4,15 +4,15 @@ locals {
   default_assume_role_with_mfa_json = data.aws_iam_policy_document.default_assume_role_with_mfa.json
 
   # admin specific policy and default fallback
-  admin_custom_assume_role_json  = var.admin_role_requires_mfa ? data.aws_iam_policy_document.admin_assume_role_with_mfa[0].json : data.aws_iam_policy_document.admin_assume_role[0].json
+  admin_custom_assume_role_json  = var.admin_role_requires_mfa ? join("", data.aws_iam_policy_document.admin_assume_role_with_mfa.*.json) : join("", data.aws_iam_policy_document.admin_assume_role.*.json)
   admin_default_assume_role_json = var.admin_role_requires_mfa ? local.default_assume_role_with_mfa_json : local.default_assume_role_json
 
   # poweruser specific policy and default fallback
-  poweruser_custom_assume_role_json  = var.poweruser_role_requires_mfa ? data.aws_iam_policy_document.poweruser_assume_role_with_mfa[0].json : data.aws_iam_policy_document.poweruser_assume_role[0].json
+  poweruser_custom_assume_role_json  = var.poweruser_role_requires_mfa ? join("", data.aws_iam_policy_document.poweruser_assume_role_with_mfa.*.json) : join("", data.aws_iam_policy_document.poweruser_assume_role.*.json)
   poweruser_default_assume_role_json = var.poweruser_role_requires_mfa ? local.default_assume_role_with_mfa_json : local.default_assume_role_json
 
   # readonly specific policy and default fallback
-  readonly_custom_assume_role_json  = var.readonly_role_requires_mfa ? data.aws_iam_policy_document.readonly_assume_role_with_mfa[0].json : data.aws_iam_policy_document.readonly_assume_role[0].json
+  readonly_custom_assume_role_json  = var.readonly_role_requires_mfa ? join("", data.aws_iam_policy_document.readonly_assume_role_with_mfa.*.json) : join("", data.aws_iam_policy_document.readonly_assume_role.*.json)
   readonly_default_assume_role_json = var.readonly_role_requires_mfa ? local.default_assume_role_with_mfa_json : local.default_assume_role_json
 }
 
@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "admin" {
   count = var.create_admin_role ? length(var.admin_role_policy_arns) : 0
 
   role       = aws_iam_role.admin[0].name
-  policy_arn = element(var.admin_role_policy_arns, count.index)
+  policy_arn = var.admin_role_policy_arns[count.index]
 }
 
 # Poweruser
@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "poweruser" {
   count = var.create_poweruser_role ? length(var.poweruser_role_policy_arns) : 0
 
   role       = aws_iam_role.poweruser[0].name
-  policy_arn = element(var.poweruser_role_policy_arns, count.index)
+  policy_arn = var.poweruser_role_policy_arns[count.index]
 }
 
 # Readonly
@@ -79,6 +79,6 @@ resource "aws_iam_role_policy_attachment" "readonly" {
   count = var.create_readonly_role ? length(var.readonly_role_policy_arns) : 0
 
   role       = aws_iam_role.readonly[0].name
-  policy_arn = element(var.readonly_role_policy_arns, count.index)
+  policy_arn = var.readonly_role_policy_arns[count.index]
 }
 
